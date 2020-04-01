@@ -18,18 +18,22 @@ const StyledModal = styled.div`
 	height: 100%;
 	overflow: auto;
 	background-color: rgba(0, 0, 0, 0.85);
+	padding: 80px 0;
 `;
 
 const StyledModalContent = styled.div`
 	position: relative;
 	margin: auto;
-	padding: 0;
 	width: auto;
 	max-width: 500px;
-	top: 50%;
-    transform: translateY(-50%);
+	top: 0;
     padding: 7px;
     border: 2px ridge #dedede;
+    @media(max-width: 1199px) {
+    	top: 50%;
+		transform: translateY(-50%);
+		padding: 0;
+	}
     @media(max-width: 767px) {
 		max-width: calc(100% - 30px);
 	} 

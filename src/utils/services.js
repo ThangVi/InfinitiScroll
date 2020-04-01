@@ -1,5 +1,5 @@
 const api = {
-  url: 'https://5cdefc046f4437001467ad3d.mockapi.io',
+  url: 'http://localhost:5000',
   token: ''
 }
 

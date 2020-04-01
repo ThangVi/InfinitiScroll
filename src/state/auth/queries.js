@@ -1,7 +1,16 @@
 import axios from 'axios'
+import api from '../../utils/services'
 
-export const loadBox = () => {
-  return axios.get('https://jsonplaceholder.typicode.com/posts')
-    .then(res => res.data)
-    .catch(err => err.response.data)
+export const userLogin = (values) => {
+	let postData = {
+		username: values.username,
+		password: values.password
+	};
+
+	return axios.post(
+		api.url + `/login`, 
+		postData
+	)
+	.then(res => res.data)
+	.catch(err => err.response.data)
 };
