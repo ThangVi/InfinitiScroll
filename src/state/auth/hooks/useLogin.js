@@ -13,6 +13,7 @@ const useLogin = () => {
 
     setIsLoading(false)
     if (values.username !== '' && values.password !== '') {
+      localStorage.setItem('user', JSON.stringify(values.username))
       dispatch(login())
     }
   }

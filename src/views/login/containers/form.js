@@ -8,7 +8,7 @@ import Design from '../../../components/form/design'
 import Title from '../../../components/form/title'
 import ErrorText from "../../../components/form/error"
 
-const LoginForm = props => (
+const LoginForm = ({...props}) => (
   <>
     <Title>Online Login Form</Title>
     <Formik
@@ -30,6 +30,7 @@ const LoginForm = props => (
             value={values.username}
             autocomplete='off'
           />
+          {props.usernameValue  && <ErrorText>Username Invalid</ErrorText>}
           <Input
             id='password'
             name='password'
@@ -41,6 +42,7 @@ const LoginForm = props => (
             value={values.password}
             autocomplete='off'
           />
+          {props.passwordValue  && <ErrorText>Password Invalid</ErrorText>}
           <Button primary onClick={handleSubmit} type="submit" >Login</Button>
         </FormGroup>
       )}

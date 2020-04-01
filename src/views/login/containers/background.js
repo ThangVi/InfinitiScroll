@@ -8,7 +8,7 @@ const Background = styled.div`
   align-items: center;
   width: 100%;
   min-height: 100vh;
-  background: url(${BGLogin}) center center / cover no-repeat scroll rgba(27, 92, 195, 0.8);
+  background: url(${BGLogin}) center center / cover no-repeat scroll #fff;
   z-index: -1;
 `
 

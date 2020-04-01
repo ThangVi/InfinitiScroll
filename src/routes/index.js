@@ -10,6 +10,8 @@ import Content from '../components/content'
 import Header from '../components/header'
 import Login from '../views/login'
 import Home from '../views/home'
+import Notification from '../views/notification'
+import Setting from '../views/setting'
 
 const Root = props => {
     const initialState = {
@@ -25,7 +27,9 @@ const Root = props => {
             <Content>
               <Switch>
                 <Route exact path="/login" component={Login} />
-                <PrivateRoute path="/" component={Home} />
+                <PrivateRoute exact path="/" component={Home} />
+                <PrivateRoute exact path="/notification" component={Notification} />
+                <PrivateRoute exact path="/setting" component={Setting} />
               </Switch>
             </Content>
           </>

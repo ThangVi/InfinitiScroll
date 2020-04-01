@@ -1,35 +1,30 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { Grid, Image, Container } from 'semantic-ui-react'
+import Masonry from 'react-masonry-css'
 
 import useGallery from '../state/home/hooks/useGallery'
 
-const StyledLi = styled.li`
+const breakpointColumnsObj = {
+  default: 5,
+  1199: 4,
+  767: 3,
+  400: 2
+};
+
+const StyledImg = styled.div`
   width: 100%;
   display: inline-block;
-  height: 200px;
-  overflow: hidden;
-  >div {
+  img {
     width: 100%;
-    height: 200px;
-    background-size: cover;
-    transition: all 0.3s ease;
+    box-shadow: 0 1px 1px 2px rgba(0,0,0, .15);
+    border-radius: 10px;
+    transition: all 0.6s ease;
     &:hover {
       cursor: zoom-in;
-      transform: scale(1.05);
+      transform: scale(1.025);
     }
   }
-`;
-
-const StyledUl = styled.ul`
-  width: 100%;
-  display: grid;
-  grid-gap: 10px;
-  grid-template-columns: repeat(auto-fit,minmax(200px,1fr));
-`;
-
-const GridColumn = styled(Grid.Column)`
-  margin-bottom: 2rem !important;
 `;
 
 const InfiniteList = ({...props}) => {
@@ -49,14 +44,15 @@ const InfiniteList = ({...props}) => {
     if(props.scrollable) {   
       list.addEventListener('scroll', (e) => {
         const el = e.target;
-        if(el.scrollTop + el.clientHeight + 20 === el.scrollHeight) {
+        if((el.scrollTop + el.clientHeight + 20 === el.scrollHeight) || (el.scrollTop + el.clientHeight + 87 === el.scrollHeight)) {
           setLoadMore(true);
         }
       });  
     } else {  
-      // list has auto height  
+      // list has auto height 
+      // 87 or 20 is height from list to bottom screen, 87 is menu bottom
       window.addEventListener('scroll', () => {
-        if (window.scrollY + window.innerHeight === list.clientHeight + list.offsetTop + 20) {
+        if ((window.scrollY + window.innerHeight === list.clientHeight + list.offsetTop + 20) || (window.scrollY + window.innerHeight === list.clientHeight + list.offsetTop + 87))  {
           setLoadMore(true);
         }
       });
@@ -80,13 +76,20 @@ const InfiniteList = ({...props}) => {
   };
 
   return (
-    <StyledUl id='list'>
+    <Masonry
+      breakpointCols={breakpointColumnsObj}
+      className="my-masonry-grid"
+      id="list"
+      columnClassName="my-masonry-grid_column"
+    >
       { props.state.map((img, i) =>
-        <StyledLi onClick={(e) => {e.preventDefault(); props.openModal(i)}} key={i}>
-          <div style={{backgroundImage: `url(${img})`}}></div>
-        </StyledLi>
+        <StyledImg onClick={(e) => {e.preventDefault(); props.openModal(i);}} key={i}>
+          <img src={img} alt={img}/>
+        </StyledImg>
       )}
-    </StyledUl>
+    </Masonry>
+
+
   );
 };
 

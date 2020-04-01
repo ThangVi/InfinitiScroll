@@ -2,25 +2,18 @@ const colors = {
   primary: '#1e70bf',
   secondary: '#9b49c1',
   default: '#fff',
-  gradient: 'linear-gradient(112deg, rgba(113,89,193,1) 0%, rgba(155,73,193,1) 100%);',
-  bg: 'linear-gradient(to top, #a18cd1 0%, #fbc2eb 100%);'
+  danger: '#dc3545'
 }
 
-const viewports = {
-  smartphone: '360px',
-  tablet: '720px',
-  desktop: '1280px'
+const screen = {
+  phone: '575px',
+  ipad: '767px',
+  ipadpro: '1199px'
 }
-
-const forms = {
-  labelColor: colors.light,
-  errorColor: colors.danger
-};
 
 const theme = Object.freeze({
   colors,
-  forms,
-  viewports
+  screen
 });
 
 export default theme;

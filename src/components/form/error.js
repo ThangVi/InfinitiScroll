@@ -2,8 +2,8 @@ import styled from 'styled-components'
 import theme from "../theme";
 
 const ErrorText = styled.span`
-  text-align: center;
-  color: ${theme.forms.errorColor};
+  text-align: left;
+  color: ${theme.colors.danger};
 `;
 
 export default ErrorText

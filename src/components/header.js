@@ -1,7 +1,9 @@
 import React, {useState} from 'react'
 import styled from 'styled-components'
 import classnames from 'classnames'
-import { Link } from 'react-router-dom'
+import {Link} from 'react-router-dom'
+import {isAndroid, isIOS} from 'react-device-detect'
+import {Icon} from 'semantic-ui-react'
 
 import { useStateValue } from '../state'
 import { logout } from '../state/auth/actions'
@@ -59,7 +61,6 @@ const MenuToggler = styled.div`
 
 const MenuWrapper = styled.div`
   height: 100vh;
-  width: 300px;
   overflow: hidden;
   position: fixed;
   left: 0;
@@ -82,7 +83,7 @@ const Menu = styled.div`
   transition: all 300ms ease;
   a {
     color: #fff;
-    font-size: 1.4rem;
+    font-size: 1.2rem;
     margin-bottom: 2rem !important;
     &:hover {
       cursor: pointer;
@@ -98,10 +99,62 @@ const Menu = styled.div`
   }
   a {
     color: #fff;
-    font-size: 1.4rem;
+    font-size: 1.2rem;
     margin-bottom: 1rem;
     &:hover {
       cursor: pointer;
+      opacity: 0.8;
+    }
+  }
+`;
+
+const SocialWrapper = styled.div`
+  display: flex;
+  a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0;
+    margin-right: 12px;
+    i {
+      font-size: 1.2rem;
+    }
+  }
+`;
+
+const OtherDeviceMenu = styled.div`
+  display: inline-flex;
+  position: fixed;
+  left: 0;
+  justify-content: space-between;
+  padding: 10px 20px;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  &.top-menu {
+    top: 0;
+  }
+  &.bottom-menu {
+    bottom: 0;
+  }
+  >a {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: #fff;
+    position: relative;
+    width: 25%;
+    align-items: center;
+    i {
+      margin-right: 0;
+      margin-bottom: 7px;
+      font-size: 1.5rem;
+    }
+    &:hover, &:active {
+      opacity: 0.8;
+      color: #fff;
+    }
+    @media(max-width: 767px) {
+      width: auto;
     }
   }
 `;
@@ -112,21 +165,75 @@ const Header = () => {
   const [activeClass, setActiveClass] = useState(false);
 
   const handleLogout = async () => {
-    await dispatch(logout())
+    localStorage.clear();
+    setActiveClass(!activeClass);
+    await dispatch(logout());
+  }
+
+  let menu = 
+    <>
+      <MenuWrapper>
+        <Menu className={classnames({ active: activeClass == true})} id='menu'>
+          <Link to={`/`} onClick={() => setActiveClass(!activeClass)}>Home</Link>
+          <Link to={`/notification`} onClick={() => setActiveClass(!activeClass)}>Notifications</Link>
+          <Link to={`/setting`} onClick={() => setActiveClass(!activeClass)}>Settings</Link>
+          {auth.logged && <a onClick={() => handleLogout()}>Logout</a>}
+          <SocialWrapper>
+            <a href="https://www.facebook.com/thang.vitat"><Icon name='facebook f' /></a>
+            <a href="#"><Icon name='twitter' /></a>
+            <a href="https://www.instagram.com/vitatthang/?hl=vi"><Icon name='instagram' /></a>
+            <a href="#"><Icon name='google plus g' /></a>
+          </SocialWrapper>
+        </Menu>
+      </MenuWrapper>
+      <MenuToggler onClick={() => setActiveClass(!activeClass)} className={classnames({ active: activeClass == true})}><span></span></MenuToggler>
+    </>
+  if (isIOS) {
+    menu = 
+      <OtherDeviceMenu className="bottom-menu">
+        <Link to={`/`}>
+          <Icon name='home' />
+          <p>Home</p>
+        </Link>
+        <Link to={`/notification`}>
+          <Icon name='info' />
+          <p>Notifications</p>
+        </Link>
+        <Link to={`/setting`}>
+          <Icon name='setting' />
+          <p>Settings</p>
+        </Link>
+        <a onClick={() => handleLogout()}>
+          <Icon name='power off' />
+          <p>Logout</p>
+        </a>
+      </OtherDeviceMenu>
+  } else if (isAndroid) {
+    menu = 
+      <OtherDeviceMenu className='top-menu'>
+        <Link to={`/`}>
+          <Icon name='home' />
+          <p>Home</p>
+        </Link>
+        <Link to={`/notification`}>
+          <Icon name='info' />
+          <p>Notifications</p>
+        </Link>
+        <Link to={`/setting`}>
+          <Icon name='setting' />
+          <p>Settings</p>
+        </Link>
+        <a onClick={() => handleLogout()}>
+          <Icon name='power off' />
+          <p>Logout</p>
+        </a>
+      </OtherDeviceMenu>
   }
 
   return (
     auth.logged ? 
       <>
-        <MenuWrapper>
-          <Menu className={classnames({ active: activeClass == true})}>
-            <Link to={`/home`} onClick={() => setActiveClass(!activeClass)}>Home</Link>
-            <Link to={`/notification`} onClick={() => setActiveClass(!activeClass)}>Notifications</Link>
-            <Link to={`/setting`} onClick={() => setActiveClass(!activeClass)}>Settings</Link>
-            {auth.logged && <a onClick={() => handleLogout()}>Logout</a>}
-          </Menu>
-        </MenuWrapper>
-        <MenuToggler onClick={() => setActiveClass(!activeClass)} className={classnames({ active: activeClass == true})}><span></span></MenuToggler>
+        {menu}
       </>
       : ''
   )

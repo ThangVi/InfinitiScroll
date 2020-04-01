@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import useGallery from '../../state/home/hooks/useGallery'
 import classnames from 'classnames'
+import {isAndroid, isIOS} from 'react-device-detect'
 
 import Spinner from '../../components/spinner'
 import ContainerFluid from '../../components/containerFluid'
@@ -16,7 +17,6 @@ const StyledModal = styled.div`
 	width: 100%;
 	height: 100%;
 	overflow: auto;
-	padding: 100px 0;
 	background-color: rgba(0, 0, 0, 0.85);
 `;
 
@@ -26,15 +26,23 @@ const StyledModalContent = styled.div`
 	padding: 0;
 	width: auto;
 	max-width: 500px;
+	top: 50%;
+    transform: translateY(-50%);
+    padding: 7px;
+    border: 2px ridge #dedede;
+    @media(max-width: 767px) {
+		max-width: calc(100% - 30px);
+	} 
 `;
 
 const StyledClose = styled.span`
 	color: white;
 	position: absolute;
-	top: 10px;
+	top: 15px;
 	right: 25px;
 	font-size: 35px;
 	font-weight: bold;
+	transition: 0.6s ease;
 	&:hover, &:focus {
 		color: #999;
 		text-decoration: none;
@@ -53,7 +61,7 @@ const ButtonArrow = styled.a`
 	width: auto;
 	padding: 16px;
 	margin-top: -50px;
-	color: white;
+	color: #fff;
 	font-weight: bold;
 	font-size: 20px;
 	transition: 0.6s ease;
@@ -62,6 +70,7 @@ const ButtonArrow = styled.a`
 	-webkit-user-select: none;
 	&:hover {
 		background-color: rgba(0, 0, 0, 0.8);
+		color: #999;
 	}
 	&.next {
 		right: 0;
@@ -81,7 +90,7 @@ const NumberText = styled.div`
 	font-size: 12px;
 	padding: 8px 12px;
 	position: absolute;
-	top: 0;
+	top: 5px;
 `;
 const StyledImg = styled.img`
 	width: 100%;
@@ -116,12 +125,12 @@ const Home = () => {
 
 	const plusSlides = (n) => {
 		setSlideIndex(slideIndex + n);
-		console.log(slideIndex + n)
+		console.log(slideIndex + n);
 	}
 
 	return (
 		<>
-			<ContainerFluid>
+			<ContainerFluid className={classnames({ android: isAndroid == true, ios: isIOS == true})}>
 				<Spinner show={isLoading} />
 				<InfiniteList state={list} openModal={openModal} />
 			</ContainerFluid>
